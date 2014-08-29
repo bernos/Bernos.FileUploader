@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 
 namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
 {
@@ -78,6 +79,11 @@ namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
         private UploadedFile BuildUploadedFile(string path, string contentType, IDictionary<string,string> metadata)
         {
             var destination = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, path);
+
+            if (!File.Exists(destination))
+            {
+                return null;
+            }
 
             return new UploadedFile(() => new FileStream(destination, FileMode.Open), path, _configuration.BaseUrl + "/" + path, contentType, metadata);
         }
