@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bernos.FileUploader.Nancy.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bernos.FileUploader.Nancy", "Bernos.FileUploader.Nancy\Bernos.FileUploader.Nancy.csproj", "{F13E2FC4-C173-4E79-B22F-2431CE6092E9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{523BBA19-88F9-423D-906C-BEC1E24ED8BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StorageProviders", "StorageProviders", "{A7ECA9EB-0A6A-47F0-9FA9-C0C257C2B99A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{18CC4D0C-A5B2-4AFD-86E7-A148E32F6DDD} = {A7ECA9EB-0A6A-47F0-9FA9-C0C257C2B99A}
+		{B4F9C525-5C56-440E-B4C2-972A33D7C8CD} = {523BBA19-88F9-423D-906C-BEC1E24ED8BC}
 	EndGlobalSection
 EndGlobal
