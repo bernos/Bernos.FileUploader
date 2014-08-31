@@ -1,4 +1,5 @@
 ﻿using Bernos.FileUploader.StorageProviders.LocalFileSystem;
+using Bernos.FileUploader.StorageProviders.S3;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
@@ -21,6 +22,14 @@ namespace Bernos.FileUploader.Nancy.Example
                     UploadPath = "Content/my-uploads",
                     BaseUrl = "/Content/my-uploads"
                 });
+
+            container.Register(typeof (IStorageProvider), typeof (S3StorageProvider));
+            container.Register<S3StorageProviderConfiguration>((c,p) => new S3StorageProviderConfiguration
+            {
+                BucketName = "bernos-bucket",
+                Folder = "uploads",
+                Region = "us-east-1"
+            });
         }
     }
 
