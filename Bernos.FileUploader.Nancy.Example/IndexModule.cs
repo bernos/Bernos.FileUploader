@@ -22,7 +22,8 @@ namespace Bernos.FileUploader.Nancy.Example
                 {
                     var metadata = new Dictionary<string, string>
                     {
-                        {"name", "brendan" }
+                        {"name", "brendan" },
+                        {"filename", file.Name}
                     };
                     
                     var result = uploadService.UploadFile(new FileUploadRequest
@@ -49,6 +50,8 @@ namespace Bernos.FileUploader.Nancy.Example
                 {
                     return HttpStatusCode.NotFound;
                 }
+
+                return Response.AsJson(file);
 
                 //return Response.AsRedirect(file.Url);
 

@@ -6,6 +6,7 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 
 namespace Bernos.FileUploader.StorageProviders.S3
 {
@@ -17,7 +18,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public S3StorageProvider(S3StorageProviderConfiguration configuration)
         {
             _configuration = configuration;
-
+            
             _client = new Lazy<AmazonS3Client>(() =>
             {
                 if (!String.IsNullOrEmpty(_configuration.AccessKeyId))
@@ -30,6 +31,27 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
             var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
+            var transferUtility = new TransferUtility(_client.Value);
+            var uploadRequest = new TransferUtilityUploadRequest
+            {
+                AutoCloseStream = false,
+                BucketName = _configuration.BucketName,
+                CannedACL = S3CannedACL.Private,
+                ContentType = contentType,
+                Key = _configuration.GetKey(path),
+                InputStream = inputStream
+            };
+
+            foreach (var kvp in metadata)
+            {
+                uploadRequest.Metadata.Add(kvp.Key, kvp.Value);
+            }
+
+            transferUtility.Upload(uploadRequest);
+
+            return BuildUploadedFile(path, contentType, metadata);
+
+
 
             // TODO: Add config param to determine whether uploads are public or private.
 
