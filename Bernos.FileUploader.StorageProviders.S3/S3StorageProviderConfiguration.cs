@@ -7,5 +7,15 @@
         public string BucketName { get; set; }
         public string Folder { get; set; }
         public string Region { get; set; }
+
+        public string GetKey(string path)
+        {
+            if (string.IsNullOrEmpty(Folder))
+            {
+                return path;
+            }
+
+            return Folder + "/" + path;
+        }
     }
 }
