@@ -13,8 +13,11 @@ namespace Bernos.FileUploader.StorageProviders.S3
         private readonly string _path;
         private readonly string _contentType;
         private readonly Lazy<AmazonS3Client> _client;
-        private readonly IDictionary<string, string> _metadata; 
-        
+        private readonly IDictionary<string, string> _metadata;
+
+        private string _cachedPresignedUrl;
+        private DateTime _cachedPresignedUrlTimeout;
+
         public S3UploadedFile(S3StorageProviderConfiguration configuration, string path, string contentType, IDictionary<string,string> metadata)
         {
             _configuration = configuration;
@@ -78,15 +81,24 @@ namespace Bernos.FileUploader.StorageProviders.S3
             // If objects are stored privately, get a temporary presigned url from S3
             if (!_configuration.StoreObjectsPublicly)
             {
-                // TODO: should cache this value
+                // If the cached value expires in more than 10 secs, then use that
+                if (!string.IsNullOrEmpty(_cachedPresignedUrl) && _cachedPresignedUrlTimeout.AddSeconds(-10) > DateTime.UtcNow)
+                {
+                    return _cachedPresignedUrl;
+                }
+
+                _cachedPresignedUrlTimeout = DateTime.UtcNow.AddMinutes(_configuration.PresignedUrlTimeoutMinutes);
+
                 var request = new GetPreSignedUrlRequest
                 {
                     BucketName = _configuration.BucketName,
                     Key = _configuration.GetKey(Path),
-                    Expires = DateTime.Now.AddMinutes(_configuration.PresignedUrlTimeoutMinutes)
+                    Expires = _cachedPresignedUrlTimeout
                 };
 
-                return _client.Value.GetPreSignedURL(request);
+                _cachedPresignedUrl = _client.Value.GetPreSignedURL(request);
+
+                return _cachedPresignedUrl;
             }
 
             // Otherwise just calculate the public S3 url
