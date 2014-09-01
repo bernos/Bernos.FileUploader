@@ -33,7 +33,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
             {
                 AutoCloseStream = false,
                 BucketName = _configuration.BucketName,
-                CannedACL = S3CannedACL.Private,
+                CannedACL = _configuration.StoreObjectsPublicly ? S3CannedACL.PublicRead : S3CannedACL.Private,
                 ContentType = contentType,
                 Key = _configuration.GetKey(path),
                 InputStream = inputStream

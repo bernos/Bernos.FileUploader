@@ -28,7 +28,8 @@ namespace Bernos.FileUploader.Nancy.Example
             {
                 BucketName = "bernos-bucket",
                 Folder = "uploads",
-                Region = "us-east-1"
+                Region = "us-east-1",
+                StoreObjectsPublicly = true
             });
         }
     }

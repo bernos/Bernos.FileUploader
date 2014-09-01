@@ -8,6 +8,7 @@
         public string Folder { get; set; }
         public string Region { get; set; }
         public string BaseUrl { get; set; }
+        public bool StoreObjectsPublicly { get; set; }
 
         public string GetKey(string path)
         {

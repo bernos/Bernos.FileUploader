@@ -69,6 +69,18 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         protected override string GetUrl()
         {
+            if (string.IsNullOrEmpty(_configuration.BaseUrl))
+            {
+                var url = "https://s3.amazonaws.com/" + _configuration.BucketName;
+
+                if (!string.IsNullOrEmpty(_configuration.Folder))
+                {
+                    url += "/" + _configuration.Folder;
+                }
+
+                return url + "/" + Path;
+            }
+
             return _configuration.BaseUrl + "/" + Path;
         }
 
