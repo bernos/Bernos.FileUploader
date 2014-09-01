@@ -9,7 +9,8 @@
         public string Region { get; set; }
         public string BaseUrl { get; set; }
         public bool StoreObjectsPublicly { get; set; }
-
+        public int PresignedUrlTimeoutMinutes { get; set; }
+        public bool UseHttp { get; set; }
         public string GetKey(string path)
         {
             if (string.IsNullOrEmpty(Folder))
@@ -18,6 +19,11 @@
             }
 
             return Folder + "/" + path;
+        }
+
+        public S3StorageProviderConfiguration()
+        {
+            PresignedUrlTimeoutMinutes = 30;
         }
     }
 }

@@ -69,19 +69,37 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         protected override string GetUrl()
         {
-            if (string.IsNullOrEmpty(_configuration.BaseUrl))
+            // If we have a configured base url, then construct the URL from that
+            if (!string.IsNullOrEmpty(_configuration.BaseUrl))
             {
-                var url = "https://s3.amazonaws.com/" + _configuration.BucketName;
-
-                if (!string.IsNullOrEmpty(_configuration.Folder))
-                {
-                    url += "/" + _configuration.Folder;
-                }
-
-                return url + "/" + Path;
+                return _configuration.BaseUrl + "/" + Path;
             }
 
-            return _configuration.BaseUrl + "/" + Path;
+            // If objects are stored privately, get a temporary presigned url from S3
+            if (!_configuration.StoreObjectsPublicly)
+            {
+                // TODO: should cache this value
+                var request = new GetPreSignedUrlRequest
+                {
+                    BucketName = _configuration.BucketName,
+                    Key = _configuration.GetKey(Path),
+                    Expires = DateTime.Now.AddMinutes(_configuration.PresignedUrlTimeoutMinutes)
+                };
+
+                return _client.Value.GetPreSignedURL(request);
+            }
+
+            // Otherwise just calculate the public S3 url
+            var url = _configuration.UseHttp ? "http" : "https";
+
+            url += "://s3.amazonaws.com/" + _configuration.BucketName;
+
+            if (!string.IsNullOrEmpty(_configuration.Folder))
+            {
+                url += "/" + _configuration.Folder;
+            }
+
+            return url + "/" + Path;
         }
 
         protected override string GetContentType()
