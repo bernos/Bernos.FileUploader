@@ -69,7 +69,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         protected override string GetUrl()
         {
-            return "blah";
+            return _configuration.BaseUrl + "/" + Path;
         }
 
         protected override string GetContentType()

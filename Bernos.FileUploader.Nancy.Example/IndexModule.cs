@@ -73,15 +73,12 @@ namespace Bernos.FileUploader.Nancy.Example
             {
                 string filepath = _.filepath.TryParse<string>("");
 
-                try
+                if (uploadService.DeleteFile(filepath))
                 {
-                    uploadService.DeleteFile(filepath);
                     return HttpStatusCode.NoContent;
                 }
-                catch (FileNotFoundException ex)
-                {
-                    return HttpStatusCode.NotFound;
-                }
+
+                return HttpStatusCode.NotFound;
             };
         }
     }

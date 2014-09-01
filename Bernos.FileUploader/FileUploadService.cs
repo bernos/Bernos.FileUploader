@@ -26,9 +26,9 @@ namespace Bernos.FileUploader
             return _storageProvider.Save(filename, request.Folder, request.ContentType, request.InputStream, request.Metadata);
         }
 
-        public void DeleteFile(string path)
+        public bool DeleteFile(string path)
         {
-            _storageProvider.Delete(path);
+            return _storageProvider.Delete(path);
         }
 
         public UploadedFile GetUploadedFile(string path)
