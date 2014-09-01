@@ -52,42 +52,39 @@ namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
 
             SaveMetadata(filename, folder, metadata);
 
-            return BuildUploadedFile(path, contentType, metadata);
+            return new LocalFileSystemUploadedFile(_configuration, _rootPathProvider, path, contentType, metadata);
         }
 
         public UploadedFile Load(string path)
         {
+            var filename = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, path);
+
+            if (!File.Exists(filename))
+            {
+                return null;
+            }
+            
             // Load up metadata and use the content type that was saved there when building up
             // the UploadedFile
             var metadata = LoadMetadata(path);
 
-            return BuildUploadedFile(path, metadata[ContentTypeMetadataKey], metadata);
+            return new LocalFileSystemUploadedFile(_configuration, _rootPathProvider, path, metadata[ContentTypeMetadataKey], metadata);
         }
 
-        public void Delete(string path)
+        public bool Delete(string path)
         {
             var file = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, path);
 
             if (!File.Exists(file))
             {
-                throw new FileNotFoundException("File does not exist", path);
+                return false;
             }
 
             File.Delete(file);
+
+            return true;
         }
         
-        private UploadedFile BuildUploadedFile(string path, string contentType, IDictionary<string,string> metadata)
-        {
-            var destination = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, path);
-
-            if (!File.Exists(destination))
-            {
-                return null;
-            }
-
-            return new UploadedFile(() => new FileStream(destination, FileMode.Open), path, _configuration.BaseUrl + "/" + path, contentType, metadata);
-        }
-
         private string EnsurePathIsRelative(string path)
         {
             if (path.StartsWith("/") || path.StartsWith("\\"))

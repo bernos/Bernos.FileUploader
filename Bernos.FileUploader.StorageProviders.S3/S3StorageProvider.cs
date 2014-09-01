@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -21,7 +20,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public S3StorageProvider(S3StorageProviderConfiguration configuration)
         {
             _configuration = configuration;
-            _client = new Lazy<AmazonS3Client>(GetClient);
+            _client = new Lazy<AmazonS3Client>(() => AmazonS3ClientFactory.CreateClient(_configuration));
         }
 
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
@@ -47,7 +46,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
             transferUtility.Upload(uploadRequest);
 
-            return BuildUploadedFile(path, contentType, metadata);
+            return new S3UploadedFile(_configuration, path, contentType, metadata);
         }
 
         public UploadedFile Load(string path)
@@ -63,8 +62,8 @@ namespace Bernos.FileUploader.StorageProviders.S3
                 var response = _client.Value.GetObjectMetadata(request);
                 var contentType = response.Headers.ContentType;
                 var metadata = response.Metadata.Keys.ToDictionary(key => key.Substring(MetadataHeaderPrefix.Length), key => response.Metadata[key]);
-
-                return BuildUploadedFile(path, contentType, metadata);
+                
+                return new S3UploadedFile(_configuration, path, contentType, metadata);
             }
             catch (AmazonS3Exception ex)
             {
@@ -76,60 +75,28 @@ namespace Bernos.FileUploader.StorageProviders.S3
             }
         }
 
-        public void Delete(string path)
+        public bool Delete(string path)
         {
-            throw new System.NotImplementedException();
-        }
-
-        private AmazonS3Client GetClient()
-        {
-            if (!String.IsNullOrEmpty(_configuration.AccessKeyId))
+            var request = new DeleteObjectRequest
             {
-                return new AmazonS3Client(_configuration.AccessKeyId, _configuration.AccessKeySecret, RegionEndpoint.GetBySystemName(_configuration.Region));
+                BucketName = _configuration.BucketName,
+                Key = _configuration.GetKey(path)
+            };
+
+            try
+            {
+                _client.Value.DeleteObject(request);
             }
-            return new AmazonS3Client(RegionEndpoint.GetBySystemName(_configuration.Region));
-        }
-
-        private UploadedFile BuildUploadedFile(string path, string contentType, IDictionary<string, string> metadata)
-        {
-            // TODO: set up url correctly. Add a "Use private" bool to config. If it is set then we will need to calculate the public URL, otherwise we
-            // can just use the default url
-            
-            return new UploadedFile(() =>
+            catch (AmazonS3Exception ex)
             {
-                try
+                if (ex.StatusCode == HttpStatusCode.NotFound)
                 {
-                    using (var client = GetClient())
-                    {
-                        var r = new GetObjectRequest
-                        {
-                            BucketName = _configuration.BucketName,
-                            Key = _configuration.GetKey(path)
-                        };
-
-                        var ms = new MemoryStream();
-
-                        using (var response = client.GetObject(r))
-                        {
-                            response.ResponseStream.CopyTo(ms);
-                        }
-
-                        ms.Position = 0;
-
-                        return ms;
-                    }
+                    return false;
                 }
-                catch (AmazonS3Exception ex)
-                {
-                    if (ex.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        return null;
-                    }
+                throw;
+            }
 
-                    //status wasn't not found, so throw the exception
-                    throw;
-                }
-            }, path, "blah", contentType, metadata);
+            return true;
         }
     }
 }

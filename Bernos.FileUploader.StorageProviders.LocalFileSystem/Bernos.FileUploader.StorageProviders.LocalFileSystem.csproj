@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="LocalFileSystemStorageProvider.cs" />
     <Compile Include="LocalFileSystemStorageProviderConfiguration.cs" />
+    <Compile Include="LocalFileSystemUploadedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

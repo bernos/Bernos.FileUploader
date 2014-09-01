@@ -10,6 +10,6 @@ namespace Bernos.FileUploader
     {
         UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata);
         UploadedFile Load(string path);
-        void Delete(string path);
+        bool Delete(string path);
     }
 }

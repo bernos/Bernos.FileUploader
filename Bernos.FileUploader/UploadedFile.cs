@@ -4,39 +4,38 @@ using System.IO;
 
 namespace Bernos.FileUploader
 {
-    public class UploadedFile
+    public abstract class UploadedFile
     {
-        private readonly Func<Stream> _content;
-        private readonly string _path;
-        private readonly IDictionary<string, string> _metadata;
-        private readonly string _url;
-        private readonly string _contentType;
-
-        public Stream AsStream()
-        {
-            return _content();
-        }
+        public abstract Stream AsStream();
 
         public string Path
         {
-            get { return _path; }
+            get { return GetPath(); }
         }
 
         public IDictionary<string, string> Metadata
         {
-            get { return _metadata; }
+            get { return GetMetadata(); }
         }
 
         public string Url
         {
-            get { return _url; }
+            get { return GetUrl(); }
         }
 
         public string ContentType
         {
-            get { return _contentType; }
+            get { return GetContentType(); }
         }
 
+        protected abstract string GetPath();
+        protected abstract IDictionary<string, string> GetMetadata();
+        protected abstract string GetUrl();
+        protected abstract string GetContentType();
+
+
+
+        /*
         public UploadedFile(Func<Stream> content, string path, string url, string contentType, IDictionary<string,string> metadata)
         {
             _url = url;
@@ -44,6 +43,6 @@ namespace Bernos.FileUploader
             _path = path;
             _contentType = contentType;
             _metadata = metadata;
-        }
+        }*/
     }
 }
