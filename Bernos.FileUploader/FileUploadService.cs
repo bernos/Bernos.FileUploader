@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Bernos.FileUploader
 {
-    public class FileUploadService
+    public class FileUploadService : IFileUploadService
     {
         private readonly FileUploaderConfiguration _configuration;
 

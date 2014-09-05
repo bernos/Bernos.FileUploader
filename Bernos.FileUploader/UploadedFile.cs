@@ -32,17 +32,5 @@ namespace Bernos.FileUploader
         protected abstract IDictionary<string, string> GetMetadata();
         protected abstract string GetUrl();
         protected abstract string GetContentType();
-
-
-
-        /*
-        public UploadedFile(Func<Stream> content, string path, string url, string contentType, IDictionary<string,string> metadata)
-        {
-            _url = url;
-            _content = content;
-            _path = path;
-            _contentType = contentType;
-            _metadata = metadata;
-        }*/
     }
 }

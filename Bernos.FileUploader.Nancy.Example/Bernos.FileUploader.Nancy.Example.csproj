@@ -90,6 +90,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bernos.FileUploader.Nancy\Bernos.FileUploader.Nancy.csproj">
+      <Project>{f13e2fc4-c173-4e79-b22f-2431ce6092e9}</Project>
+      <Name>Bernos.FileUploader.Nancy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bernos.FileUploader.StorageProviders.LocalFileSystem\Bernos.FileUploader.StorageProviders.LocalFileSystem.csproj">
       <Project>{18cc4d0c-a5b2-4afd-86e7-a148e32f6ddd}</Project>
       <Name>Bernos.FileUploader.StorageProviders.LocalFileSystem</Name>

@@ -14,23 +14,19 @@ namespace Bernos.FileUploader.Nancy.Example
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
-            container
-                .Register
-                <LocalFileSystemStorageProviderConfiguration>((c,p) => new LocalFileSystemStorageProviderConfiguration
-                {
-                    UploadPath = "Content/my-uploads",
-                    BaseUrl = "/Content/my-uploads"
-                });
-
-            container.Register<FileUploaderConfiguration>((c, p) => new FileUploaderConfiguration
+            
+            container.Register<IFileUploadService>((c, p) =>
             {
-                StorageProvider = new S3StorageProvider(new S3StorageProviderConfiguration
+                return new FileUploadService(new FileUploaderConfiguration
                 {
-                    BucketName = "bernos-bucket",
-                    Folder = "uploads",
-                    Region = "us-east-1"
-                })
-            });
+                    StorageProvider = new S3StorageProvider(new S3StorageProviderConfiguration
+                    {
+                        BucketName = "bernos-bucket",
+                        Folder = "uploads",
+                        Region = "us-east-1"
+                    })
+                });
+            }).AsSingleton();
         }
     }
 
