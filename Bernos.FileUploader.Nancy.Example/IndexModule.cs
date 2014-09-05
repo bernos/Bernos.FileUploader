@@ -18,24 +18,12 @@ namespace Bernos.FileUploader.Nancy.Example
             {
                 var results = new List<UploadedFile>();
                 
-                foreach (var file in this.Request.Files)
+                foreach (var fileUploadRequest in this.Request.GetFileUploadRequests())
                 {
-                    var metadata = new Dictionary<string, string>
-                    {
-                        {"name", "brendan" },
-                        {"filename", file.Name}
-                    };
-                    
-                    var result = uploadService.UploadFile(new FileUploadRequest
-                    {
-                        Filename = file.Name,
-                        Folder = "",
-                        InputStream = file.Value,
-                        ContentType = file.ContentType,
-                        Metadata = metadata
-                    });
+                    fileUploadRequest.Metadata.Add("name", "blah");
+                    fileUploadRequest.Folder = "/something";
 
-                    results.Add(result);
+                    results.Add(uploadService.UploadFile(fileUploadRequest));
                 }
 
                 return Response.AsJson(results);
