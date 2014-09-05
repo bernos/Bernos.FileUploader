@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Bernos.FileUploader
 {
@@ -20,6 +21,13 @@ namespace Bernos.FileUploader
             {
                 filename += "." + tokens[tokens.Length - 1];
             }
+
+            if (request.Metadata == null)
+            {
+                request.Metadata = new Dictionary<string, string>();
+            }
+
+            request.Metadata.Add("filename", request.Filename);
 
             return _configuration.StorageProvider.Save(filename, request.Folder, request.ContentType, request.InputStream, request.Metadata);
         }

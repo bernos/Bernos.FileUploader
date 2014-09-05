@@ -1,5 +1,4 @@
-﻿using Bernos.FileUploader.StorageProviders.LocalFileSystem;
-using Bernos.FileUploader.StorageProviders.S3;
+﻿using Bernos.FileUploader.StorageProviders.S3;
 using Nancy;
 using Nancy.TinyIoc;
 
@@ -26,7 +25,7 @@ namespace Bernos.FileUploader.Nancy.Example
                         Region = "us-east-1"
                     })
                 });
-            }).AsSingleton();
+            });
         }
     }
 

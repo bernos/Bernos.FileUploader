@@ -7,7 +7,7 @@ namespace Bernos.FileUploader.Nancy.Example
 
     public class IndexModule : NancyModule
     {
-        public IndexModule(FileUploadService uploadService)
+        public IndexModule(IFileUploadService uploadService)
         {
             Get["/"] = parameters =>
             {
@@ -16,6 +16,7 @@ namespace Bernos.FileUploader.Nancy.Example
 
             Post["/"] = _ =>
             {
+                /*
                 var results = new List<UploadedFile>();
                 
                 foreach (var fileUploadRequest in this.Request.GetFileUploadRequests())
@@ -24,9 +25,9 @@ namespace Bernos.FileUploader.Nancy.Example
                     fileUploadRequest.Folder = "/something";
 
                     results.Add(uploadService.UploadFile(fileUploadRequest));
-                }
+                }*/
 
-                return Response.AsJson(results);
+                return Response.AsJson(Request.UploadFiles(uploadService));
             };
 
             Get["/uploads/{filepath}"] = _ =>
