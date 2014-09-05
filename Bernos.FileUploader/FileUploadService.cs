@@ -6,11 +6,11 @@ namespace Bernos.FileUploader
 {
     public class FileUploadService
     {
-        private readonly IStorageProvider _storageProvider;
+        private readonly FileUploaderConfiguration _configuration;
 
-        public FileUploadService(IStorageProvider storageProvider)
+        public FileUploadService(FileUploaderConfiguration configuration)
         {
-            _storageProvider = storageProvider;
+            _configuration = configuration;
         }
 
         public UploadedFile UploadFile(FileUploadRequest request)
@@ -23,17 +23,17 @@ namespace Bernos.FileUploader
                 filename += "." + tokens[tokens.Length - 1];
             }
 
-            return _storageProvider.Save(filename, request.Folder, request.ContentType, request.InputStream, request.Metadata);
+            return _configuration.StorageProvider.Save(filename, request.Folder, request.ContentType, request.InputStream, request.Metadata);
         }
 
         public bool DeleteFile(string path)
         {
-            return _storageProvider.Delete(path);
+            return _configuration.StorageProvider.Delete(path);
         }
 
         public UploadedFile GetUploadedFile(string path)
         {
-            return _storageProvider.Load(path);
+            return _configuration.StorageProvider.Load(path);
         }
     }
 }

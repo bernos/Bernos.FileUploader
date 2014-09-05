@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
@@ -25,8 +24,6 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
-            // TODO: Add config param to determine whether uploads are public or private.
-
             var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
             var transferUtility = new TransferUtility(_client.Value);
             var uploadRequest = new TransferUtilityUploadRequest
