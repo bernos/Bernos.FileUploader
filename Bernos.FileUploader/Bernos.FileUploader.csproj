@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="FileUploaderConfiguration.cs" />
     <Compile Include="FileUploadRequest.cs" />
+    <Compile Include="FileUploadResponse.cs" />
     <Compile Include="FileUploadService.cs" />
     <Compile Include="IFileUploadService.cs" />
     <Compile Include="IPathProvider.cs" />

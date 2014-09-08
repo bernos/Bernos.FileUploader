@@ -12,11 +12,11 @@ namespace Bernos.FileUploader.Nancy
         {
             return request.Files.Select(CreateFileUploadRequest);
         }
-        public static IEnumerable<UploadedFile> UploadFiles(this Request request, IFileUploadService fileUploadService)
+        public static IEnumerable<FileUploadResponse> UploadFiles(this Request request, IFileUploadService fileUploadService)
         {
             return UploadFiles(request, fileUploadService, String.Empty);
         }
-        public static IEnumerable<UploadedFile> UploadFiles(this Request request, IFileUploadService fileUploadService,
+        public static IEnumerable<FileUploadResponse> UploadFiles(this Request request, IFileUploadService fileUploadService,
             string folder)
         {
             return UploadFiles(request, fileUploadService, (file, fileUploadRequest) =>
@@ -27,9 +27,9 @@ namespace Bernos.FileUploader.Nancy
                 }
             });
         }
-        public static IEnumerable<UploadedFile> UploadFiles(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
+        public static IEnumerable<FileUploadResponse> UploadFiles(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
         {
-            var uploadedFiles = new List<UploadedFile>();
+            var fileUploadResponses = new List<FileUploadResponse>();
 
             foreach (var file in request.Files)
             {
@@ -40,16 +40,16 @@ namespace Bernos.FileUploader.Nancy
                     fileUploadRequestBuilder(file, fileUploadRequest);
                 }
 
-                uploadedFiles.Add(fileUploadService.UploadFile(fileUploadRequest));
+                fileUploadResponses.Add(fileUploadService.UploadFile(fileUploadRequest));
             }
 
-            return uploadedFiles;
+            return fileUploadResponses;
         }
-        public static Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService)
+        public static Task<IEnumerable<FileUploadResponse>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService)
         {
             return UploadFilesAsync(request, fileUploadService, String.Empty);
         }
-        public static Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService,
+        public static Task<IEnumerable<FileUploadResponse>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService,
             string folder)
         {
             return UploadFilesAsync(request, fileUploadService, (file, fileUploadRequest) =>
@@ -60,9 +60,9 @@ namespace Bernos.FileUploader.Nancy
                 }
             });
         }
-        public static async Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
+        public static async Task<IEnumerable<FileUploadResponse>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
         {
-            var tasks = new List<Task<UploadedFile>>();
+            var tasks = new List<Task<FileUploadResponse>>();
 
             foreach (var file in request.Files)
             {

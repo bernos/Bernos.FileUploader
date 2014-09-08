@@ -12,6 +12,11 @@ namespace Bernos.FileUploader
         public string ContentType { get; set; }
         public Stream InputStream { get; set; }
         public string Folder { get; set; }
-        public IDictionary<string, string> Metadata { get; set; } 
+        public IDictionary<string, string> Metadata { get; set; }
+
+        public FileUploadRequest()
+        {
+            Metadata = new Dictionary<string, string>();
+        }
     }
 }

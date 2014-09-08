@@ -49,7 +49,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
             var path = BuildUploadPath(folder, filename);
             var transferUtility = new TransferUtility(_client.Value);
             var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
-
+            
             await transferUtility.UploadAsync(uploadRequest);
 
             return new S3UploadedFile(_configuration, path, contentType, metadata);
