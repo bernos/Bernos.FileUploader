@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
 {
@@ -21,6 +22,39 @@ namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
         {
             _configuration = configuration;
             _rootPathProvider = rootPathProvider;
+        }
+
+
+        public async Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
+        {
+            var relativeFolder = EnsurePathIsRelative(folder);
+            var destinationFolder = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, relativeFolder);
+
+            var path = string.IsNullOrEmpty(relativeFolder)
+                ? filename
+                : string.Format("{0}/{1}", relativeFolder, filename);
+
+            if (!Directory.Exists(destinationFolder))
+            {
+                Directory.CreateDirectory(destinationFolder);
+            }
+
+            using (var destinationStream = new FileStream(Path.Combine(destinationFolder, filename), FileMode.Create))
+            {
+                await inputStream.CopyToAsync(destinationStream);
+            }
+
+            if (metadata == null)
+            {
+                metadata = new Dictionary<string, string>();
+            }
+
+            // Copy the content type to the metadata before saving
+            metadata[ContentTypeMetadataKey] = contentType;
+
+            SaveMetadata(filename, folder, metadata);
+
+            return new LocalFileSystemUploadedFile(_configuration, _rootPathProvider, path, contentType, metadata);
         }
 
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)

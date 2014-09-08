@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
@@ -22,10 +23,9 @@ namespace Bernos.FileUploader.StorageProviders.S3
             _client = new Lazy<AmazonS3Client>(() => AmazonS3ClientFactory.CreateClient(_configuration));
         }
 
-        public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
-        {
-            var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
-            var transferUtility = new TransferUtility(_client.Value);
+        private TransferUtilityUploadRequest PrepareUploadRequest(string path, string contentType,
+            Stream inputStream, IEnumerable<KeyValuePair<string, string>> metadata)
+        {   
             var uploadRequest = new TransferUtilityUploadRequest
             {
                 AutoCloseStream = false,
@@ -40,6 +40,26 @@ namespace Bernos.FileUploader.StorageProviders.S3
             {
                 uploadRequest.Metadata.Add(kvp.Key, kvp.Value);
             }
+
+            return uploadRequest;
+        }
+
+        public async Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
+        {
+            var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
+            var transferUtility = new TransferUtility(_client.Value);
+            var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
+
+            await transferUtility.UploadAsync(uploadRequest);
+
+            return new S3UploadedFile(_configuration, path, contentType, metadata);
+        }
+
+        public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
+        {
+            var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
+            var transferUtility = new TransferUtility(_client.Value);
+            var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
 
             transferUtility.Upload(uploadRequest);
 

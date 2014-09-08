@@ -14,7 +14,7 @@ namespace Bernos.FileUploader.Nancy.Example
                 return View["index"];
             };
 
-            Post["/"] = _ =>
+            Post["/", true] = async (_, ct) =>
             {
                 /*
                 var results = new List<UploadedFile>();
@@ -24,10 +24,15 @@ namespace Bernos.FileUploader.Nancy.Example
                     fileUploadRequest.Metadata.Add("name", "blah");
                     fileUploadRequest.Folder = "/something";
 
-                    results.Add(uploadService.UploadFile(fileUploadRequest));
-                }*/
+                    var result = await uploadService.UploadFileAsync(fileUploadRequest);
 
-                return Response.AsJson(Request.UploadFiles(uploadService));
+                    results.Add(result);
+                }
+                
+                return Response.AsJson(results);
+                */
+
+                return Response.AsJson(Request.UploadFilesAsync(uploadService));
             };
 
             Get["/uploads/{filepath}"] = _ =>
