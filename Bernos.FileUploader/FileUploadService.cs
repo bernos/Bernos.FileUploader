@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bernos.FileUploader
@@ -65,6 +67,11 @@ namespace Bernos.FileUploader
             if (request.InputStream.Length > _configuration.MaxFilesizeBytes)
             {
                 throw new Exception(string.Format("Uploaded file size exceded configured maximum size of {0} bytes.", _configuration.MaxFilesizeBytes));
+            }
+
+            if (_configuration.AllowedContentTypes.All(c => c != request.ContentType))
+            {
+                throw new Exception(string.Format("File upload service is not configurated to allow uploads of type {0}.", request.ContentType));
             }
         }
 
