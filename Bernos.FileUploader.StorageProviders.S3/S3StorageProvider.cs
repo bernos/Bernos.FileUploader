@@ -46,7 +46,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         public async Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
-            var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
+            var path = BuildUploadPath(folder, filename);
             var transferUtility = new TransferUtility(_client.Value);
             var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
 
@@ -57,7 +57,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
-            var path = string.IsNullOrEmpty(folder) ? filename : folder + "/" + filename;
+            var path = BuildUploadPath(folder, filename);
             var transferUtility = new TransferUtility(_client.Value);
             var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
 
@@ -114,6 +114,11 @@ namespace Bernos.FileUploader.StorageProviders.S3
             }
 
             return true;
+        }
+
+        private string BuildUploadPath(string folder, string filename)
+        {
+            return string.IsNullOrEmpty(folder) ? filename : folder.Trim('/') + "/" + filename;
         }
     }
 }

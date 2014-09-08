@@ -104,7 +104,7 @@ namespace Bernos.FileUploader.StorageProviders.LocalFileSystem
 
             return new LocalFileSystemUploadedFile(_configuration, _rootPathProvider, path, metadata[ContentTypeMetadataKey], metadata);
         }
-
+        
         public bool Delete(string path)
         {
             var file = Path.Combine(_rootPathProvider.GetRootPath(), _configuration.UploadPath, path);

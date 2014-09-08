@@ -12,7 +12,6 @@ namespace Bernos.FileUploader.Nancy
         {
             return request.Files.Select(CreateFileUploadRequest);
         }
-
         public static IEnumerable<UploadedFile> UploadFiles(this Request request, IFileUploadService fileUploadService)
         {
             return UploadFiles(request, fileUploadService, String.Empty);
@@ -28,7 +27,6 @@ namespace Bernos.FileUploader.Nancy
                 }
             });
         }
-
         public static IEnumerable<UploadedFile> UploadFiles(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
         {
             var uploadedFiles = new List<UploadedFile>();
@@ -47,12 +45,10 @@ namespace Bernos.FileUploader.Nancy
 
             return uploadedFiles;
         }
-
         public static Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService)
         {
             return UploadFilesAsync(request, fileUploadService, String.Empty);
         }
-
         public static Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService,
             string folder)
         {
@@ -64,7 +60,6 @@ namespace Bernos.FileUploader.Nancy
                 }
             });
         }
-
         public static async Task<IEnumerable<UploadedFile>> UploadFilesAsync(this Request request, IFileUploadService fileUploadService, Action<HttpFile, FileUploadRequest> fileUploadRequestBuilder)
         {
             var tasks = new List<Task<UploadedFile>>();
@@ -83,7 +78,6 @@ namespace Bernos.FileUploader.Nancy
 
             return await Task.WhenAll(tasks);
         }
-
         private static FileUploadRequest CreateFileUploadRequest(HttpFile file)
         {
             return new FileUploadRequest

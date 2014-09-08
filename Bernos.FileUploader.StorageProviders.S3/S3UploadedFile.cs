@@ -75,7 +75,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
             // If we have a configured base url, then construct the URL from that
             if (!string.IsNullOrEmpty(_configuration.BaseUrl))
             {
-                return _configuration.BaseUrl + "/" + Path;
+                return _configuration.BaseUrl.Trim('/') + "/" + Path.Trim('/');
             }
 
             // If objects are stored privately, get a temporary presigned url from S3
@@ -92,7 +92,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
                 var request = new GetPreSignedUrlRequest
                 {
                     BucketName = _configuration.BucketName,
-                    Key = _configuration.GetKey(Path),
+                    Key = _configuration.GetKey(Path.Trim('/')),
                     Expires = _cachedPresignedUrlTimeout
                 };
 
@@ -108,10 +108,10 @@ namespace Bernos.FileUploader.StorageProviders.S3
 
             if (!string.IsNullOrEmpty(_configuration.Folder))
             {
-                url += "/" + _configuration.Folder;
+                url += "/" + _configuration.Folder.Trim('/');
             }
 
-            return url + "/" + Path;
+            return url + "/" + Path.Trim('/');
         }
 
         protected override string GetContentType()

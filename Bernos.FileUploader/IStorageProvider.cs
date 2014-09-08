@@ -9,8 +9,7 @@ namespace Bernos.FileUploader
     /// </summary>
     public interface IStorageProvider
     {
-        Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream,
-            IDictionary<string, string> metadata);
+        Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata);
         UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata);
         UploadedFile Load(string path);
         bool Delete(string path);

@@ -32,7 +32,7 @@ namespace Bernos.FileUploader.Nancy.Example
                 return Response.AsJson(results);
                 */
 
-                return Response.AsJson(Request.UploadFilesAsync(uploadService));
+                return Response.AsJson(await Request.UploadFilesAsync(uploadService, "/a-folder"));
             };
 
             Get["/uploads/{filepath}"] = _ =>
