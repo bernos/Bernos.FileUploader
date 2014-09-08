@@ -19,6 +19,8 @@ namespace Bernos.FileUploader
 
             try
             {
+                ValidateFileUploadRequest(request);
+
                 var uploadedFile = _configuration.StorageProvider.Save(BuildFilename(request), request.Folder,
                     request.ContentType, request.InputStream, request.Metadata);
 
@@ -36,6 +38,8 @@ namespace Bernos.FileUploader
 
             try
             {
+                ValidateFileUploadRequest(request);
+
                 var uploadedFile = await _configuration.StorageProvider.SaveAsync(BuildFilename(request), request.Folder, request.ContentType, request.InputStream, request.Metadata);
 
                 return new FileUploadResponse(uploadedFile);
@@ -56,6 +60,14 @@ namespace Bernos.FileUploader
             return _configuration.StorageProvider.Load(path);
         }
 
+        protected virtual void ValidateFileUploadRequest(FileUploadRequest request)
+        {
+            if (request.InputStream.Length > _configuration.MaxFilesizeBytes)
+            {
+                throw new Exception(string.Format("Uploaded file size exceded configured maximum size of {0} bytes.", _configuration.MaxFilesizeBytes));
+            }
+        }
+
         private string BuildFilename(FileUploadRequest request)
         {
             var tokens = request.Filename.Split('.');
@@ -68,5 +80,7 @@ namespace Bernos.FileUploader
 
             return filename;
         }
+
+
     }
 }

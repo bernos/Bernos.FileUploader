@@ -5,7 +5,7 @@ namespace Bernos.FileUploader
     public class FileUploadResponse
     {
         public UploadedFile File { get; private set; }
-        public Exception Error { get; private set; }
+        public FileUploadError Error { get; private set; }
 
         public FileUploadResponse(UploadedFile file)
         {
@@ -14,7 +14,7 @@ namespace Bernos.FileUploader
 
         public FileUploadResponse(Exception e)
         {
-            Error = e;
+            Error = new FileUploadError(e);
         }
     }
 }

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUploaderConfiguration.cs" />
+    <Compile Include="FileUploadError.cs" />
     <Compile Include="FileUploadRequest.cs" />
     <Compile Include="FileUploadResponse.cs" />
     <Compile Include="FileUploadService.cs" />
