@@ -80,7 +80,7 @@ namespace Bernos.FileUploader
             var tokens = request.Filename.Split('.');
             var filename = Guid.NewGuid().ToString();
 
-            if (tokens.Length > 1)
+            if (tokens.Length > 1 && _configuration.RetainFileExtensions)
             {
                 filename += "." + tokens[tokens.Length - 1];
             }
