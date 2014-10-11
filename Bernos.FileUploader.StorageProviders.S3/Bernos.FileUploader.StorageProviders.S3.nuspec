@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/bernos/Bernos.FileUploader</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/bernos/Bernos.FileUploader/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright Brendan McMahon 2014</copyright>
+    <tags>FileUploader AWS S3</tags>
+    <dependencies>
+      <dependency id="Bernos.FileUploader" version="0.0.1"/>
+    </dependencies>
+  </metadata>  
+</package>
