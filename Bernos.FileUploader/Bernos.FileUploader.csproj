@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultPathProvider.cs" />
     <Compile Include="FileUploaderConfiguration.cs" />
     <Compile Include="FileUploadError.cs" />
     <Compile Include="FileUploadRequest.cs" />
