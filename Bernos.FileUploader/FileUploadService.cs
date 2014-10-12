@@ -12,6 +12,11 @@ namespace Bernos.FileUploader
 
         public FileUploadService(FileUploaderConfiguration configuration)
         {
+            if (configuration.StorageProvider == null)
+            {
+                throw new ArgumentException("No storage provider has been configured.", "configuration")
+                    ;
+            }
             _configuration = configuration;
         }
 
@@ -28,7 +33,7 @@ namespace Bernos.FileUploader
 
                 return new FileUploadResponse(uploadedFile);
             }
-            catch(Exception e)
+            catch(FileUploadException e)
             {
                 return new FileUploadResponse(e);
             }
@@ -46,7 +51,7 @@ namespace Bernos.FileUploader
 
                 return new FileUploadResponse(uploadedFile);
             }
-            catch (Exception e)
+            catch (FileUploadException e)
             {
                 return new FileUploadResponse(e);
             }
@@ -64,25 +69,34 @@ namespace Bernos.FileUploader
 
         protected virtual void ValidateFileUploadRequest(FileUploadRequest request)
         {
+            if (request.InputStream == null)
+            {
+                throw new FileUploadException(FileUploadErrorCode.NoContent);
+            }
+
             if (request.InputStream.Length > _configuration.MaxFilesizeBytes)
             {
-                throw new Exception(string.Format("Uploaded file size exceded configured maximum size of {0} bytes.", _configuration.MaxFilesizeBytes));
+                throw new FileUploadException(FileUploadErrorCode.IllegalFileSize);
             }
 
             if (_configuration.AllowedContentTypes.All(c => c != request.ContentType))
             {
-                throw new Exception(string.Format("File upload service is not configurated to allow uploads of type {0}.", request.ContentType));
+                throw new FileUploadException(FileUploadErrorCode.IllegalContentType);
             }
         }
 
         private string BuildFilename(FileUploadRequest request)
         {
-            var tokens = request.Filename.Split('.');
             var filename = Guid.NewGuid().ToString();
 
-            if (tokens.Length > 1 && _configuration.RetainFileExtensions)
+            if (!string.IsNullOrEmpty(request.Filename) && _configuration.RetainFileExtensions)
             {
-                filename += "." + tokens[tokens.Length - 1];
+                var tokens = request.Filename.Split('.');
+
+                if (tokens.Length > 1)
+                {
+                    filename += "." + tokens[tokens.Length - 1];
+                }
             }
 
             return filename;
