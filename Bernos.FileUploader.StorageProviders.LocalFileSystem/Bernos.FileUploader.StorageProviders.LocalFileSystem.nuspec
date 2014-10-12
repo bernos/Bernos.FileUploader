@@ -13,7 +13,7 @@
     <copyright>Copyright Brendan McMahon 2014</copyright>
     <tags>FileUploader</tags>
     <dependencies>
-      <dependency id="Bernos.FileUploader" version="0.0.1"/>
+      <dependency id="Bernos.FileUploader" version="0.0.2"/>
     </dependencies>
   </metadata>  
 </package>
