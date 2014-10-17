@@ -47,6 +47,7 @@
     <Compile Include="S3StorageProvider.cs" />
     <Compile Include="S3StorageProviderConfiguration.cs" />
     <Compile Include="S3UploadedFile.cs" />
+    <Compile Include="TransferUtilityFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bernos.FileUploader\Bernos.FileUploader.csproj">

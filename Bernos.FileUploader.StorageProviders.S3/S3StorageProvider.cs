@@ -47,7 +47,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public async Task<UploadedFile> SaveAsync(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
             var path = BuildUploadPath(folder, filename);
-            var transferUtility = new TransferUtility(_client.Value);
+            var transferUtility = _configuration.TransferUtilityFactory.CreateTransferUtility(_client.Value);
             var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
             
             await transferUtility.UploadAsync(uploadRequest);
@@ -58,7 +58,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public UploadedFile Save(string filename, string folder, string contentType, Stream inputStream, IDictionary<string, string> metadata)
         {
             var path = BuildUploadPath(folder, filename);
-            var transferUtility = new TransferUtility(_client.Value);
+            var transferUtility = _configuration.TransferUtilityFactory.CreateTransferUtility(_client.Value);
             var uploadRequest = PrepareUploadRequest(path, contentType, inputStream, metadata);
 
             transferUtility.Upload(uploadRequest);

@@ -40,6 +40,22 @@ namespace Bernos.FileUploader.StorageProviders.S3
             set { _clientFactory = value; }
         }
 
+        private TransferUtilityFactory _transferUtilityFactory;
+
+        public TransferUtilityFactory TransferUtilityFactory
+        {
+            get
+            {
+                if (_transferUtilityFactory == null)
+                {
+                    _transferUtilityFactory = new TransferUtilityFactory();
+                }
+                return _transferUtilityFactory;
+            }
+
+            set { _transferUtilityFactory = value; }
+        }
+
         public S3StorageProviderConfiguration(string bucketName, string region) : this(bucketName, region, "") { }
 
         public S3StorageProviderConfiguration(string bucketName, string region, string folder)
