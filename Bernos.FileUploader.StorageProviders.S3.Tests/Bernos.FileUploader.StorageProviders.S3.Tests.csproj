@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D5FF39D-59CD-4515-B3AF-895DDFD9F08C}</ProjectGuid>
+    <ProjectGuid>{4C52C9D9-5CDC-4C06-B991-47F427D97959}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bernos.FileUploader.Tests</RootNamespace>
-    <AssemblyName>Bernos.FileUploader.Tests</AssemblyName>
+    <RootNamespace>Bernos.FileUploader.StorageProviders.S3.Tests</RootNamespace>
+    <AssemblyName>Bernos.FileUploader.StorageProviders.S3.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NSubstitute">
-      <HintPath>..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,16 +42,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileUploadServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="S3StorageProviderConfigurationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bernos.FileUploader\Bernos.FileUploader.csproj">
-      <Project>{7a4e49ee-3c52-4ffe-87f7-b851119243e7}</Project>
-      <Name>Bernos.FileUploader</Name>
+    <ProjectReference Include="..\Bernos.FileUploader.StorageProviders.S3\Bernos.FileUploader.StorageProviders.S3.csproj">
+      <Project>{67835d5e-132c-499c-a97b-7d4e14f444ef}</Project>
+      <Name>Bernos.FileUploader.StorageProviders.S3</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

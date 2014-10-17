@@ -18,12 +18,7 @@ namespace Bernos.FileUploader.Nancy.Example
             {
                 return new FileUploadService(new FileUploaderConfiguration
                 {
-                    StorageProvider = new S3StorageProvider(new S3StorageProviderConfiguration
-                    {
-                        BucketName = "bernos-bucket",
-                        Folder = "uploads",
-                        Region = "us-east-1"
-                    })
+                    StorageProvider = new S3StorageProvider(new S3StorageProviderConfiguration("bernos-bucket", "us-east-1", "uploads"))
                 });
             });
         }

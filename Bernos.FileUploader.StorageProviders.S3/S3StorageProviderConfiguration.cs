@@ -1,4 +1,7 @@
-﻿namespace Bernos.FileUploader.StorageProviders.S3
+﻿using Amazon;
+using System;
+
+namespace Bernos.FileUploader.StorageProviders.S3
 {
     public class S3StorageProviderConfiguration
     {
@@ -21,8 +24,28 @@
             return Folder + "/" + path;
         }
 
-        public S3StorageProviderConfiguration()
+        public S3StorageProviderConfiguration(string bucketName, string region) : this(bucketName, region, "") { }
+
+        public S3StorageProviderConfiguration(string bucketName, string region, string folder)
         {
+            var theRegion = RegionEndpoint.GetBySystemName(region);
+
+            if (theRegion.DisplayName.ToLower() == "unknown")
+            {
+                throw new ArgumentException("Please specify a valid AWS region", "region");
+            }
+
+            if (string.IsNullOrEmpty(bucketName))
+            {
+                throw new ArgumentException("Please specify a valid AWS bucket name", "bucket");
+            }
+
+            if (!string.IsNullOrEmpty(folder)) {
+                Folder = folder;
+            }
+
+            BucketName = bucketName;
+            Region = region;
             PresignedUrlTimeoutMinutes = 30;
         }
     }

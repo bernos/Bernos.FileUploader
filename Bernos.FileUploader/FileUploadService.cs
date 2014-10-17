@@ -41,8 +41,6 @@ namespace Bernos.FileUploader
 
         public async Task<FileUploadResponse> UploadFileAsync(FileUploadRequest request)
         {
-            request.Metadata.Add("filename", request.Filename);
-
             try
             {
                 ValidateFileUploadRequest(request);
@@ -87,21 +85,7 @@ namespace Bernos.FileUploader
 
         private string BuildFilename(FileUploadRequest request)
         {
-            var filename = Guid.NewGuid().ToString();
-
-            if (!string.IsNullOrEmpty(request.Filename) && _configuration.RetainFileExtensions)
-            {
-                var tokens = request.Filename.Split('.');
-
-                if (tokens.Length > 1)
-                {
-                    filename += "." + tokens[tokens.Length - 1];
-                }
-            }
-
-            return filename;
+            return string.IsNullOrEmpty(request.Filename) ? Guid.NewGuid().ToString() : request.Filename;
         }
-
-
     }
 }

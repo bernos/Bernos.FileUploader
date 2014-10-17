@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bernos.FileUploader.StorageProviders.LocalFileSystem")]
-[assembly: AssemblyDescription("Local filesystem storage provider for FileUploader")]
+[assembly: AssemblyTitle("Bernos.FileUploader.StorageProviders.S3.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Brendan McMahon")]
-[assembly: AssemblyProduct("Bernos.FileUploader.StorageProviders.LocalFileSystem")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Bernos.FileUploader.StorageProviders.S3.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("84fa19ea-955d-4a57-b2d6-4ce2d966de43")]
+[assembly: Guid("ddb7cb4e-8ea7-461b-b512-d5f77b9ed667")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.3")]
-[assembly: AssemblyFileVersion("0.0.3")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
