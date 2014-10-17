@@ -21,6 +21,7 @@ namespace Bernos.FileUploader.StorageProviders.S3.Tests
             Assert.DoesNotThrow(() => new S3StorageProviderConfiguration("bucket", "ap-southeast-1", ""));
         }
 
+        [Fact]
         public void Should_Throw_For_Invalid_BucketName()
         {
             Assert.Throws<ArgumentException>(() => new S3StorageProviderConfiguration("", "ap-southeast-1", ""));
