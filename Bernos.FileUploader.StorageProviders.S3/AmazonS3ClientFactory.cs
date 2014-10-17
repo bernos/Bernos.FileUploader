@@ -4,9 +4,9 @@ using Amazon.S3;
 
 namespace Bernos.FileUploader.StorageProviders.S3
 {
-    internal static class AmazonS3ClientFactory
+    public class AmazonS3ClientFactory
     {
-        public static AmazonS3Client CreateClient(S3StorageProviderConfiguration configuration)
+        public AmazonS3Client CreateClient(S3StorageProviderConfiguration configuration)
         {
             if (!String.IsNullOrEmpty(configuration.AccessKeyId))
             {

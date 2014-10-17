@@ -24,6 +24,22 @@ namespace Bernos.FileUploader.StorageProviders.S3
             return Folder + "/" + path;
         }
 
+        private AmazonS3ClientFactory _clientFactory;
+
+        public AmazonS3ClientFactory ClientFactory
+        {
+            get
+            {
+                if (_clientFactory == null)
+                {
+                    _clientFactory = new AmazonS3ClientFactory();
+                }
+                return _clientFactory;
+            }
+
+            set { _clientFactory = value; }
+        }
+
         public S3StorageProviderConfiguration(string bucketName, string region) : this(bucketName, region, "") { }
 
         public S3StorageProviderConfiguration(string bucketName, string region, string folder)

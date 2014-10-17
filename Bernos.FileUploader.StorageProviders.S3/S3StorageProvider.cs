@@ -20,7 +20,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
         public S3StorageProvider(S3StorageProviderConfiguration configuration)
         {
             _configuration = configuration;
-            _client = new Lazy<AmazonS3Client>(() => AmazonS3ClientFactory.CreateClient(_configuration));
+            _client = new Lazy<AmazonS3Client>(() => _configuration.ClientFactory.CreateClient(_configuration));
         }
 
         private TransferUtilityUploadRequest PrepareUploadRequest(string path, string contentType,

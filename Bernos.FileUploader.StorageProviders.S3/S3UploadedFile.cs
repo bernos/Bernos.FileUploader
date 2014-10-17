@@ -24,7 +24,7 @@ namespace Bernos.FileUploader.StorageProviders.S3
             _path = path;
             _contentType = contentType;
             _metadata = metadata;
-            _client = new Lazy<AmazonS3Client>(() => AmazonS3ClientFactory.CreateClient(_configuration));
+            _client = new Lazy<AmazonS3Client>(() => _configuration.ClientFactory.CreateClient(_configuration));
         }
 
         public override Stream AsStream()
