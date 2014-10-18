@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,14 @@ namespace Bernos.FileUploader.StorageProviders.S3.Tests
         public void Should_Throw_For_Invalid_BucketName()
         {
             Assert.Throws<ArgumentException>(() => new S3StorageProviderConfiguration("", "ap-southeast-1", ""));
+        }
+
+        [Fact]
+        public void Should_Load_From_App_Settings()
+        {
+            var configuration = S3StorageProviderConfiguration.FromAppSettings();
+
+            Assert.Equal(ConfigurationManager.AppSettings["S3StorageProvider:Bucket"], configuration.BucketName);
         }
     }
 }
