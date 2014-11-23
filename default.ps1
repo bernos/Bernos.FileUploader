@@ -47,7 +47,7 @@ Task UnitTests -Depends Build {
 		"Running unit tests from $_.BaseName" | Write-Host -ForegroundColor Yellow
 
 		$test_assembly = $_.DirectoryName + "\bin\" + $configuration + "\" + $_.BaseName + ".dll"
-		$xml_file = $test_result_dir + "\report.xml"
+		$xml_file = $test_result_dir + "\" + $_.BaseName + ".xml"
 
 		exec { .$xunit_location "$test_assembly" /nunit $xml_file } "One or more unit tests failed!"
 

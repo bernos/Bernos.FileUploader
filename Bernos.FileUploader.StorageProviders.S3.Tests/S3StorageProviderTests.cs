@@ -9,6 +9,7 @@ namespace Bernos.FileUploader.StorageProviders.S3.Tests
 {
     public class S3StorageProviderTests
     {
+        /*
         [Fact]
         public void Should_Return_Null_When_Loading_Non_Existant_File()
         {
@@ -17,6 +18,6 @@ namespace Bernos.FileUploader.StorageProviders.S3.Tests
             var service = new S3StorageProvider(config);
 
             Assert.Null(service.Load("asdf"));
-        }
+        }*/
     }
 }
