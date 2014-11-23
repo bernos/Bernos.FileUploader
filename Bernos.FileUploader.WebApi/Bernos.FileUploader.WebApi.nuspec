@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
     <id>$id$</id>
@@ -13,7 +13,7 @@
     <copyright>Copyright Brendan McMahon 2014</copyright>
     <tags>FileUploader WebApi</tags>
     <dependencies>
-      <dependency id="Bernos.FileUploader" version="0.0.3"/>
+      <dependency id="Bernos.FileUploader" version="0.0.7"/>
     </dependencies>
   </metadata>  
 </package>
